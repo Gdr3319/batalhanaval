@@ -1,0 +1,86 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define TAMANHO 10
+
+char tabuleiro[TAMANHO][TAMANHO];
+
+int main() {
+    int linha, coluna;
+    int navioLinha, navioColuna;
+    int tirosDados = 0;
+    int acertouNavio = 0;
+
+    for (linha = 0; linha < TAMANHO; linha++) {
+        for (coluna = 0; coluna < TAMANHO; coluna++) {
+            tabuleiro[linha][coluna] = '~';
+        }
+    }
+
+    srand(time(NULL));
+    navioLinha = rand() % TAMANHO;
+    navioColuna = rand() % TAMANHO;
+
+    printf("Batalha Naval!\n");
+    printf("Afunde o navio no tabuleiro %dx%d.\n", TAMANHO, TAMANHO);
+
+    while (!acertouNavio) {
+        printf("\n  ");
+        for (coluna = 0; coluna < TAMANHO; coluna++) {
+            printf("%d ", coluna);
+        }
+        printf("\n");
+
+        for (linha = 0; linha < TAMANHO; linha++) {
+            printf("%d ", linha);
+            for (coluna = 0; coluna < TAMANHO; coluna++) {
+                if (tabuleiro[linha][coluna] == 'X' || tabuleiro[linha][coluna] == 'O') {
+                    printf("%c ", tabuleiro[linha][coluna]);
+                } else {
+                    printf("~ ");
+                }
+            }
+            printf("\n");
+        }
+
+        printf("\nOnde voce quer atirar? (Linha (espaço) Coluna): "); // tem que dar um espaço
+        scanf("%d %d", &linha, &coluna);
+        tirosDados++;
+
+        if (linha < 0 || linha >= TAMANHO || coluna < 0 || coluna >= TAMANHO) {
+            printf("Coordenadas invalidas! Tente novamente.\n");
+            tirosDados--;
+            continue;
+        }
+
+        if (linha == navioLinha && coluna == navioColuna) {
+            printf("Voce afundou o navio em %d tiros!\n", tirosDados);
+            tabuleiro[linha][coluna] = 'X';
+            acertouNavio = 1;
+        } else {
+            printf("Agua! Tente de novo.\n");
+            tabuleiro[linha][coluna] = 'O';
+        }
+    }
+
+    printf("\nTerminou\n");
+    printf("  ");
+    for (coluna = 0; coluna < TAMANHO; coluna++) {
+        printf("%d ", coluna);
+    }
+    printf("\n");
+    for (linha = 0; linha < TAMANHO; linha++) {
+        printf("%d ", linha);
+        for (coluna = 0; coluna < TAMANHO; coluna++) {
+            if (linha == navioLinha && coluna == navioColuna) {
+                 printf("N ");
+            } else {
+                 printf("%c ", tabuleiro[linha][coluna]);
+            }
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
